@@ -6,7 +6,8 @@ its description should probably be something like the best unopinionated easy to
 
 ok docs time
 
-NOTE: fuck typings i gave up on that shit it made me angry
+NOTE: ~~fuck typings i gave up on that shit it made me angry~~
+NOTE #2: i have reconsidered my previous anger and it is now in typescript
 
 # Usage
 
