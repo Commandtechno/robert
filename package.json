@@ -1,6 +1,6 @@
 {
   "name": "robert",
-  "version": "1.0.9",
+  "version": "1.1.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/Commandtechno/robert.git"
   },
-  "keywords": [],
+  "keywords": [
+    "https",
+    "http",
+    "https client",
+    "http client",
+    "fetch",
+    "promise",
+    "simple"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
