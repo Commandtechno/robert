@@ -1,8 +1,8 @@
-![Logo](https://cdn.discordapp.com/emojis/843908573578002512.gif) Robert
+![Logo](https://cdn.discordapp.com/emojis/843908573578002512.gif) Ro🅱ert
 
 the most shitty generic node js http package
 
-its description should probably be something like the best unopinionated easy to use minimal node js http framework
+its description should pro🅱a🅱ly 🅱e something like the 🅱est unopinionated easy to use minimal node js http framework
 
 ok docs time
 
