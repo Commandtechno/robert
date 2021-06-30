@@ -11,7 +11,7 @@ interface Options {
   headers?: object;
 }
 
-export class Client {
+class Client {
   base: string;
   port: number;
   headers: object;
@@ -319,4 +319,4 @@ class res {
   }
 }
 
-export default new Client();
+export = Object.assign(new Client(), { Client });
