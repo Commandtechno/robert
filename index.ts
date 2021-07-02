@@ -1,8 +1,8 @@
 import { Readable } from "stream";
 
 const protocols = {
-  "https:": require("https").req,
-  "http:": require("http").req
+  "https:": require("https").request,
+  "http:": require("http").request
 };
 
 interface Options {
