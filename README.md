@@ -7,6 +7,7 @@ its description should pro🅱a🅱ly 🅱e something like the 🅱est unopinion
 ok docs time
 
 NOTE: ~~fuck typings i gave up on that shit it made me angry~~
+
 NOTE #2: i have reconsidered my previous anger and it is now in typescript
 
 # Usage
@@ -102,7 +103,8 @@ request.query(key, value); // Add a new query to the URL's parameters
 request.setQuery({ key: value }); // Set the URL's query parameters
 request.header(key, value); // Set a header
 request.setHeaders({ key: value }); // Sets all headers
-request.body(text); // Set text for the request body
+request.buffer(buffer); // Set a buffer for the request body
+request.text(text); // Set text for the request body
 request.json({ key: value }); // Set a json for the request body
 request.form({ key: value }); // Set a multipart form data for the request body
 request.send(); // Send the request, returns Response

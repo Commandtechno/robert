@@ -120,7 +120,7 @@ class req {
   url: URL;
   port: number;
   headers: object;
-  data?: string;
+  data?: Buffer | string;
 
   constructor(config) {
     Object.assign(this, config);
@@ -148,7 +148,12 @@ class req {
     return this;
   }
 
-  body(text: string) {
+  buffer(buffer: Buffer) {
+    this.data = buffer;
+    return this;
+  }
+
+  text(text: string) {
     this.data = text;
     this.header("Content-Type", "text/raw");
     return this;
