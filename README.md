@@ -78,19 +78,20 @@ client
 Client (`Default`)
 
 ```js
-// robert instaceof robert.Client = true
-
+// NOTE: All options are optional, by default robert is equal to new robert.Client()
 const client = new robert.Client({
     base: 'A base URL for all requests',
     port: 443 /* HTTPS default is 443 */,
     headers: { Some: 'default headers' }
 })
 
+client.setPort(port) // Set the default port
 client.header(key, value) // Set a default header
 client.setHeaders({ key: value }) // Sets default headers
 
 // All HTTPS methods (Returns request)
 client.get(url)
+client.post(url)
 ...etc
 ```
 

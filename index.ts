@@ -244,7 +244,7 @@ class res {
       (stream) =>
         new Promise((resolve, reject) => {
           let res = [];
-          stream.on("data", res.push);
+          stream.on("data", (chunk) => res.push(chunk));
           stream.on("end", () =>
             resolve({
               data: res,
