@@ -13,14 +13,18 @@ interface Options {
 
 class Client {
   base: string;
-  port: number;
+  port: number | null;
   headers: object;
 
   constructor(options: string | Options = {}) {
     if (typeof options === "string") options = { base: options };
     this.base = typeof options.base === "string" ? options.base : "";
-    this.port = typeof options.port === "number" ? options.port : 443;
+    this.port = typeof options.port === "number" ? options.port : null;
     this.headers = typeof options.headers === "object" ? options.headers : {};
+  }
+
+  setPort(port: number) {
+    this.port = port;
   }
 
   header(name: string, value: string) {
