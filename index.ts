@@ -37,7 +37,7 @@ class Client {
     return this;
   }
 
-  get(url: string) {
+  get(url: string = "") {
     return new req({
       method: "GET",
       url: new URL(this.base + url),
@@ -46,7 +46,7 @@ class Client {
     });
   }
 
-  head(url: string) {
+  head(url: string = "") {
     return new req({
       method: "HEAD",
       url: new URL(this.base + url),
@@ -55,7 +55,7 @@ class Client {
     });
   }
 
-  post(url: string) {
+  post(url: string = "") {
     return new req({
       method: "POST",
       url: new URL(this.base + url),
@@ -64,7 +64,7 @@ class Client {
     });
   }
 
-  put(url: string) {
+  put(url: string = "") {
     return new req({
       method: "PUT",
       url: new URL(this.base + url),
@@ -73,7 +73,7 @@ class Client {
     });
   }
 
-  delete(url: string) {
+  delete(url: string = "") {
     return new req({
       method: "DELETE",
       url: new URL(this.base + url),
@@ -82,7 +82,7 @@ class Client {
     });
   }
 
-  connect(url: string) {
+  connect(url: string = "") {
     return new req({
       method: "CONNECT",
       url: new URL(this.base + url),
@@ -91,7 +91,7 @@ class Client {
     });
   }
 
-  options(url: string) {
+  options(url: string = "") {
     return new req({
       method: "OPTIONS",
       url: new URL(this.base + url),
@@ -100,7 +100,7 @@ class Client {
     });
   }
 
-  trace(url: string) {
+  trace(url: string = "") {
     return new req({
       method: "TRACE",
       url: new URL(this.base + url),
@@ -109,7 +109,7 @@ class Client {
     });
   }
 
-  patch(url: string) {
+  patch(url: string = "") {
     return new req({
       method: "PATCH",
       url: new URL(this.base + url),
