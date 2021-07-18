@@ -2,6 +2,10 @@
 
 the most shitty generic node js http package
 
+# What is robert?
+
+![robert](https://cdn.discordapp.com/attachments/861222626915647489/866269177110855690/file.png)
+
 its description should pro🅱a🅱ly 🅱e something like the 🅱est unopinionated easy to use minimal node js http framework
 
 ok docs time
