@@ -1,6 +1,6 @@
 {
   "name": "robert",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,10 @@
     "http client",
     "fetch",
     "promise",
-    "simple"
+    "simple",
+    "robert",
+    "carrot",
+    "chomp"
   ],
   "author": "",
   "license": "ISC",

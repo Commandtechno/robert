@@ -135,9 +135,7 @@ class req {
     return this;
   }
 
-  setQuery(
-    query?: string[][] | Record<string, string> | string | URLSearchParams
-  ) {
+  setQuery(query?: string[][] | Record<string, string> | string | URLSearchParams) {
     this.url.search = new URLSearchParams(query).toString();
     return this;
   }
@@ -265,10 +263,7 @@ class res {
     headers: object;
   }> {
     return this.buffer().then((res) => ({
-      data: res.data.buffer.slice(
-        res.data.byteLength,
-        res.data.byteOffset + res.data.byteLength
-      ),
+      data: res.data.buffer.slice(res.data.byteLength, res.data.byteOffset + res.data.byteLength),
       statusCode: res.statusCode,
       statusMessage: res.statusMessage,
       headers: res.headers
@@ -328,4 +323,8 @@ class res {
   }
 }
 
-export = Object.assign(new Client(), { Client });
+const $ = new Client();
+Object.assign($, { Client });
+Object.assign($, { default: $ });
+
+export = $;
