@@ -13,8 +13,8 @@ interface Options {
 
 class Client {
   base: string;
-  port: number | null;
-  headers: object;
+  port: number | null | undefined;
+  headers: object;                      
 
   constructor(options: string | Options = {}) {
     if (typeof options === "string") options = { base: options };
