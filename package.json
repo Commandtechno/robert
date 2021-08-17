@@ -1,10 +1,11 @@
 {
   "name": "robert",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "minify": "esbuild src/client.ts --bundle --minify --platform=node --outfile=min.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

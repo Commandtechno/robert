@@ -1,6 +1,8 @@
-![Logo](https://cdn.discordapp.com/emojis/843908573578002512.gif) Ro🅱ert
+![Logo](https://cdn.discordapp.com/emojis/843908573578002512.gif)
 
-the most shitty generic node js http package
+# Ro🅱ert
+
+genric node js https package pog lol
 
 # What is robert?
 
@@ -12,28 +14,48 @@ ok docs time
 
 NOTE: ~~fuck typings i gave up on that shit it made me angry~~
 
-NOTE #2: i have reconsidered my previous anger and it is now in typescript
+NOTE #2: ~~i have reconsidered my previous anger and it is now in typescript~~
+
+NOTE #3: i have re written robert once again idk why ask robert
 
 # Usage
 
 ```js
-const robert = require("robert");
+// CommonJS
+const robert = require("robert").default;
+
+// Typescript / ES2019
+import robert from "robert";
 ```
 
 Make a simple GET request
 
 ```js
 robert
-    .get('https://api.zeppelin.gg/')
-    .send()
-    .json();
+  .get('https://api.zeppelin.gg/')
+  .send('json');
 
 // Returns
 {
-    data: { status: 'cookies', with: 'milk' },
-    statusCode: 200,
-    statusMessage: 'OK',
-    headers: { ... }
+  status: 'cookies',
+  with: 'milk'
+};
+
+// If you want status and headers use this
+
+robert
+  .get('https://api.zeppelin.gg/')
+  .send('json');
+
+// Returns
+{
+  data: {
+    status: 'cookies',
+    with: 'milk'
+  },
+  status: 200,
+  statusText: 'OK',
+  headers: { ... }
 };
 ```
 
@@ -41,39 +63,32 @@ Send a Discord Message
 
 ```js
 robert
-    .post('https://discord.com/api/v9/channels/{CHANNEL}/messages')
-    .json({ content: 'robert best http client' })
-    .header('Authorization', 'Bot {TOKEN}')
-    .send()
-    .json();
+  .post('https://discord.com/api/v9/channels/{CHANNEL}/messages')
+  .json({ content: 'robert best http client' })
+  .auth('Bot {TOKEN}')
+  .send('json');
 
 // Returns
 {
-    data: { content: 'robert best http client', ... },
-    statusCode: 200,
-    statusMessage: 'OK',
-    headers: { ... }
+  content: 'robert best http client', ... }
 };
 ```
 
 Execute a Discord webhook using a client
 
 ```js
-const client = new robert.Client({ base: 'https://discord.com/api/v9', headers: {} /* Optional */ })
+const client = robert.client('https://discord.com/api/v9')
+  .query('wait', true)
+  .format('json');
 
 client
-    .post('/webhooks/{WEBHOOK_ID}/{WEBHOOK_TOKEN}')
-    .query('wait', true)
-    .json({ embeds: [{ description: 'this is from a robert client with base ' + client.base }] })
-    .send()
-    .json()
+  .post('/webhooks/{WEBHOOK_ID}/{WEBHOOK_TOKEN}')
+  .json({ embeds: [{ description: 'this is from a robert client with base ' + client.base }] })
+  .send();
 
 // Returns
 {
-    data: { embeds: [{ description: 'this is from a robert client with base https://discord.com/api/v9' }], ... },
-    statusCode: 200,
-    statusMessage: 'OK',
-    headers: { ... }
+  { embeds: [{ description: 'this is from a robert client with base https://discord.com/api/v9' }], ... }
 };
 ```
 
@@ -82,21 +97,52 @@ client
 Client (`Default`)
 
 ```js
-// NOTE: All options are optional, by default robert is equal to new robert.Client()
-const client = new robert.Client({
-    base: 'A base URL for all requests',
-    port: 443 /* HTTPS default is 443 */,
-    headers: { Some: 'default headers' }
-})
+// NOTE: All options are optional, by default robert is equal to robert.client() which have the following options by default
+const client = robert.client({
+  base: "",
+  port: null,
+  size: "10mb",
+  query: {},
+  format: "stream",
+  headers: {},
+  timeout: "30s",
+  redirects: 3
+});
 
-client.setPort(port) // Set the default port
-client.header(key, value) // Set a default header
-client.setHeaders({ key: value }) // Sets default headers
+// Change options
+client.full(); // Show full response with headers, status, data
+client.format(format); // Change the default format for all responses
+client.base(base); // Change the base URL for requests
+client.port(port); // Set the port it requests on (Default's to protocol)
+client.redirects(redirects); // Set the maximum amount of redirects for it to follow
+client.size(size); // Set the maximum size for requests
+client.timeout(time); // Set the maximum time to wait for a request
+
+// Modify URL parameters
+client.query(key, value); // Add a single parameter
+client.setQuery(query); // Replace all parameters
+client.addQuery(query); // Add multiple parameters
+client.delQuery(key); // Delete a parameter
+
+// Modify headers
+client.header(key, value); // Add a single header
+client.setHeaders(headers); // Replace all headers
+client.addHeaders(headers); // Add multiple headers
+client.delHeader(key); // Delete a header
+
+// Header shortcuts
+client.auth(value); // Shortcut for the authorization header
+client.agent(value); // Shortcut for the user-agent header
+client.contentType(value); // Shortcut for the content-type header
 
 // All HTTPS methods (Returns request)
-client.get(url)
-client.post(url)
-...etc
+client.get(url);
+client.put(url);
+client.head(url);
+client.post(url);
+client.patch(url);
+client.delete(url);
+client.options(url);
 ```
 
 Request
@@ -104,30 +150,53 @@ Request
 ```js
 const request = robert.get("https://api.zeppelin.gg/");
 
-request.query(key, value); // Add a new query to the URL's parameters
-request.setQuery({ key: value }); // Set the URL's query parameters
-request.header(key, value); // Set a header
-request.setHeaders({ key: value }); // Sets all headers
-request.buffer(buffer); // Set a buffer for the request body
-request.text(text); // Set text for the request body
-request.json({ key: value }); // Set a json for the request body
-request.form({ key: value }); // Set a multipart form data for the request body
-request.send(); // Send the request, returns Response
+// Change options
+client.full(); // Show full response with headers, status, data
+client.format(format); // Change the default format for all responses
+client.port(port); // Set the port it requests on (Default's to protocol)
+client.redirects(redirects); // Set the maximum amount of redirects for it to follow
+client.size(size); // Set the maximum size for requests
+client.timeout(time); // Set the maximum time to wait for a request
+
+// Modify URL parameters
+client.query(key, value); // Add a single parameter
+client.setQuery(query); // Replace all parameters
+client.addQuery(query); // Add multiple parameters
+client.delQuery(key); // Delete a parameter
+
+// Modify headers
+client.header(key, value); // Add a single header
+client.setHeaders(headers); // Replace all headers
+client.addHeaders(headers); // Add multiple headers
+client.delHeader(key); // Delete a header
+
+// Header shortcuts
+client.auth(value); // Shortcut for the authorization header
+client.agent(value); // Shortcut for the user-agent header
+client.contentType(value); // Shortcut for the content-type header
+request.contentLength(value /* Default's to body length */); // Shortcut for the content-length header
+
+// Set response body
+request.stream(stream); // Set's a stream as the response body (Accepts form-data (https://www.npmjs.com/package/form-data) instance)
+request.buffer(buffer); // Set's a buffer as the response body
+request.text(text); // Set's text as the response body and sets the content-type header to text/raw
+request.json(json); // Set's an object as the response body and sets the content-type header to application/json
+request.form(form); // Set's an object as the response body and sets the content-type header to application/x-www-form-urlencoded
+
+// Send the request
+request.send(format); // Returns Promise<format> with the result (Default is stream)
 ```
 
-Response
+Formats
 
 ```js
-const response = robert.get("https://api.zeppelin.gg/").send();
-
-// All return a promise
-// NOTE: ... = { statusCode: Number, statusMessage: String, headers: Object }
-
-response.stream(); // { data: ReadableStream, ... }
-response.buffer(); // { data: Buffer, ...  }
-response.bufferArray(); // { data: Array<Buffer>, ...  }
-response.arrayBuffer(); // { data: arrayBuffer, ...  }
-response.blob(); // { data: Blob, ...  }
-response.text(); // { data: String, ... }
-response.json(); // { data: Object, ... }
+status; // { code: 200, text: 'OK' }
+headers; // { ... }
+stream; // Default, can be piped into write stream
+buffer; // bufferArray combined into one <Buffer ...>
+bufferArray; // Raw chunks from the stream [<Buffer ...>, ...]
+text; // Gets the output as a normal string like this
+json; // { ... }
+arrayBuffer; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
+blob; // https://developer.mozilla.org/en-US/docs/Web/API/Blob
 ```
