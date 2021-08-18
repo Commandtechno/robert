@@ -18,6 +18,7 @@ const global: ClientOptions = {
 function create(method: string, options: Options) {
   return function (url: string = "") {
     const $ = new URL(options.base + url);
+    console.log(options.headers);
     const headers = { ...options.headers };
     const query = { ...options.query, ...Object.fromEntries([...$.searchParams]) };
 
@@ -39,7 +40,9 @@ export default function (options?: string | ClientOptions) {
   let opts: ClientOptions = {};
   if (typeof options === "string") opts = { base: options };
 
-  opts = Object.assign({}, global, opts);
+  opts = { ...global, ...opts };
+  opts.query = { ...opts.query };
+  opts.headers = { ...opts.headers };
   opts.timeout = parseTime(opts.timeout);
   opts.size = parseSize(opts.size);
 
