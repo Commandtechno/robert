@@ -31,7 +31,9 @@ export default function response(
         if ((res.statusCode === 301 || res.statusCode === 302) && res.headers.location) {
           redirects--;
           if (redirects < 0) return reject(Error("Max redirects reached"));
-          return response(method, format, res.headers.location, body, options, redirects);
+          let redirect = res.headers.location;
+          if (redirect.startsWith("/")) redirect = new URL(url).origin + redirect;
+          return response(method, format, redirect, body, options, redirects);
         }
 
         if ((res.statusCode < 200 || res.statusCode >= 400) && !options.full)
