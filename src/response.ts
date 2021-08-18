@@ -33,7 +33,7 @@ export default function response(
           if (redirects < 0) return reject(Error("Max redirects reached"));
           let redirect = res.headers.location;
           if (redirect.startsWith("/")) redirect = new URL(url).origin + redirect;
-          return response(method, format, redirect, body, options, redirects);
+          return resolve(response(method, format, redirect, body, options, redirects));
         }
 
         if ((res.statusCode < 200 || res.statusCode >= 400) && !options.full)
