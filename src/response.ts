@@ -28,9 +28,12 @@ export default function response(
       (res) => {
         res.on("error", (error) => reject(error));
 
-        if ((res.statusCode === 301 || res.statusCode === 302) && res.headers.location) {
+        if (
+          (res.statusCode === 301 || res.statusCode === 302) &&
+          res.headers.location &&
+          redirects > 0
+        ) {
           redirects--;
-          if (redirects < 0) return reject(Error("Max redirects reached"));
           let redirect = res.headers.location;
           if (redirect.startsWith("/")) redirect = new URL(url).origin + redirect;
           return resolve(response(method, format, redirect, body, options, redirects));
@@ -51,6 +54,7 @@ export default function response(
           resolve(
             options.full
               ? {
+                  url,
                   data,
                   status: res.statusCode,
                   statusText: res.statusMessage,
