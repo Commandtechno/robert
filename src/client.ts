@@ -18,7 +18,6 @@ const global: ClientOptions = {
 function create(method: string, options: Options) {
   return function (url: string = "") {
     const $ = new URL(options.base + url);
-    console.log(options.headers);
     const headers = { ...options.headers };
     const query = { ...options.query, ...Object.fromEntries([...$.searchParams]) };
 
