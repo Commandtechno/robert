@@ -1,7 +1,7 @@
-import { Stream } from "stream";
+import { Readable } from "stream";
 
 export type Key = number | string;
-export type Body = Stream | Buffer | string;
+export type Body = Readable | Buffer | string;
 export type Params = string[][] | Record<string, string> | string | URLSearchParams;
 export type Header = number | string | string[];
 export type Headers = Record<Key, Header>;
@@ -15,6 +15,10 @@ export type Formats =
   | "json"
   | "arrayBuffer"
   | "blob";
+
+export interface FormData extends Readable {
+  getHeaders();
+}
 
 export interface Client {
   get(url?: string): Request;
@@ -71,7 +75,8 @@ export interface Request {
   contentType(value: Header): Request;
   contentLength(value?: Header): Request;
 
-  stream(data: Stream): Request;
+  formData(formData: FormData): Request;
+  stream(data: Readable): Request;
   buffer(buffer: Buffer): Request;
   text(text: string): Request;
   json(json: object): Request;

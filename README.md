@@ -178,7 +178,8 @@ client.contentType(value); // Shortcut for the content-type header
 request.contentLength(value /* Default's to body length */); // Shortcut for the content-length header
 
 // Set response body
-request.stream(stream); // Set's a stream as the response body (Accepts form-data (https://www.npmjs.com/package/form-data) instance)
+request.formData(formData); // Set's a https://www.npmjs.com/package/form-data object as the request body
+request.stream(stream); // Set's a stream as the response body
 request.buffer(buffer); // Set's a buffer as the response body
 request.text(text); // Set's text as the response body and sets the content-type header to text/raw
 request.json(json); // Set's an object as the response body and sets the content-type header to application/json

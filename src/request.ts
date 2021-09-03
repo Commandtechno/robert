@@ -1,11 +1,11 @@
-import { Formats, Header, Headers, Key, Params, Request, RequestOptions } from "./types";
+import { FormData, Formats, Header, Headers, Key, Params, Request, RequestOptions } from "./types";
 import { parseSize, parseTime } from "./util";
 
-import { Stream } from "stream";
+import { Readable } from "stream";
 import response from "./response";
 
 export default function (method: string, url: string, options: RequestOptions): Request {
-  let body: Stream | Buffer | string;
+  let body: Readable | Buffer | string;
 
   return {
     full(): Request {
@@ -84,7 +84,12 @@ export default function (method: string, url: string, options: RequestOptions): 
       return this;
     },
 
-    stream(stream: Stream): Request {
+    formData(formData: FormData) {
+      this.addHeaders(formData.getHeaders());
+      body = formData;
+      return this;
+    },
+    stream(stream: Readable): Request {
       body = stream;
       return this;
     },
@@ -93,7 +98,7 @@ export default function (method: string, url: string, options: RequestOptions): 
       return this;
     },
     text(text: string): Request {
-      this.contentType("text/raw");
+      this.contentType("text/plain");
       body = text;
       return this;
     },
