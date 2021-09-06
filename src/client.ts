@@ -38,12 +38,10 @@ function create(method: string, options: Options) {
 export default function (options?: string | ClientOptions) {
   let opts: ClientOptions = {};
   if (typeof options === "string") opts = { ...global, base: options };
-  else {
-    opts = { ...global, ...(options as object) };
-    opts.query = { ...opts.query };
-    opts.headers = { ...opts.headers };
-  }
+  else opts = { ...global, ...options };
 
+  opts.query = { ...opts.query };
+  opts.headers = { ...opts.headers };
   opts.timeout = parseTime(opts.timeout);
   opts.size = parseSize(opts.size);
 
