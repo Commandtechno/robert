@@ -22,10 +22,10 @@ NOTE #3: i have re written robert once again idk why ask robert
 
 ```js
 // CommonJS
-const robert = require("robert").default;
+const robert = require("robert");
 
 // Typescript / ES2019
-import robert from "robert";
+import * as robert from "robert";
 ```
 
 Make a simple GET request
@@ -45,6 +45,7 @@ robert
 
 robert
   .get('https://api.zeppelin.gg/')
+  .full()
   .send('json');
 
 // Returns

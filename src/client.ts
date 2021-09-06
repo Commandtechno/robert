@@ -39,7 +39,7 @@ export default function (options?: string | ClientOptions) {
   let opts: ClientOptions = {};
   if (typeof options === "string") opts = { base: options };
 
-  opts = { ...global, ...opts };
+  opts = { ...global, ...(options as object) };
   opts.query = { ...opts.query };
   opts.headers = { ...opts.headers };
   opts.timeout = parseTime(opts.timeout);

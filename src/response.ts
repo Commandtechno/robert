@@ -25,14 +25,10 @@ export default function response(
         headers: options.headers,
         timeout: options.timeout
       },
-      (res) => {
-        res.on("error", (error) => reject(error));
+      res => {
+        res.on("error", error => reject(error));
 
-        if (
-          (res.statusCode === 301 || res.statusCode === 302) &&
-          res.headers.location &&
-          redirects > 0
-        ) {
+        if ((res.statusCode === 301 || res.statusCode === 302) && res.headers.location && redirects > 0) {
           redirects--;
           let redirect = res.headers.location;
           if (redirect.startsWith("/")) redirect = new URL(url).origin + redirect;
@@ -40,9 +36,7 @@ export default function response(
         }
 
         if ((res.statusCode < 200 || res.statusCode >= 400) && !options.full)
-          return reject(
-            Error("URL responded with status " + res.statusCode + ": " + res.statusMessage)
-          );
+          return reject(Error("URL responded with status " + res.statusCode + ": " + res.statusMessage));
 
         async function $(data) {
           try {
@@ -76,20 +70,18 @@ export default function response(
           case "bufferArray":
             return $(toBuffers(res, options.size));
           case "text":
-            return $(toBuffer(res, options.size).then((buffer) => buffer.toString()));
+            return $(toBuffer(res, options.size).then(buffer => buffer.toString()));
           case "json":
-            return $(toBuffer(res, options.size).then((buffer) => JSON.parse(buffer.toString())));
+            return $(toBuffer(res, options.size).then(buffer => JSON.parse(buffer.toString())));
           case "arrayBuffer":
             return $(
-              toBuffer(res, options.size).then((buffer) =>
+              toBuffer(res, options.size).then(buffer =>
                 buffer.slice(buffer.byteLength, buffer.byteOffset + buffer.byteLength)
               )
             );
           case "blob":
             return $(
-              toBuffers(res, options.size).then(
-                (buffers) => new Blob(buffers, { type: res.headers["content-type"] })
-              )
+              toBuffers(res, options.size).then(buffers => new Blob(buffers, { type: res.headers["content-type"] }))
             );
           default:
             throw Error("Unknown format");
@@ -102,11 +94,9 @@ export default function response(
       else req.write(body);
     }
 
-    req.on("socket", (socket) =>
-      socket.on("timeout", () => req.destroy(Error("Request timed out")))
-    );
+    req.on("socket", socket => socket.on("timeout", () => req.destroy(Error("Request timed out"))));
 
-    req.on("error", (error) => reject(error));
+    req.on("error", error => reject(error));
     req.end();
   });
 }

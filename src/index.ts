@@ -1,4 +1,4 @@
 import client from "./client";
 
 const $ = client();
-export default Object.assign($, { client });
+export = Object.assign($, { client });
