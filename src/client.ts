@@ -37,7 +37,7 @@ function create(method: string, options: Options) {
 
 export default function (options?: string | ClientOptions) {
   let opts: ClientOptions = {};
-  if (typeof options === "string") opts = { base: options };
+  if (typeof options === "string") opts = { ...global, base: options };
   else {
     opts = { ...global, ...(options as object) };
     opts.query = { ...opts.query };
