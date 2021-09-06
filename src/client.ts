@@ -42,9 +42,10 @@ export default function (options?: string | ClientOptions) {
     opts = { ...global, ...(options as object) };
     opts.query = { ...opts.query };
     opts.headers = { ...opts.headers };
-    opts.timeout = parseTime(opts.timeout);
-    opts.size = parseSize(opts.size);
   }
+
+  opts.timeout = parseTime(opts.timeout);
+  opts.size = parseSize(opts.size);
 
   return {
     get: create("GET", opts as Options),
