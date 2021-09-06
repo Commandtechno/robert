@@ -38,12 +38,13 @@ function create(method: string, options: Options) {
 export default function (options?: string | ClientOptions) {
   let opts: ClientOptions = {};
   if (typeof options === "string") opts = { base: options };
-
-  opts = { ...global, ...(options as object) };
-  opts.query = { ...opts.query };
-  opts.headers = { ...opts.headers };
-  opts.timeout = parseTime(opts.timeout);
-  opts.size = parseSize(opts.size);
+  else {
+    opts = { ...global, ...(options as object) };
+    opts.query = { ...opts.query };
+    opts.headers = { ...opts.headers };
+    opts.timeout = parseTime(opts.timeout);
+    opts.size = parseSize(opts.size);
+  }
 
   return {
     get: create("GET", opts as Options),
