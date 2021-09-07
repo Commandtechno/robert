@@ -89,14 +89,18 @@ export default function response(
       }
     );
 
-    if (body) {
-      if (body instanceof Stream) body.pipe(req);
-      else req.write(body);
-    }
-
     req.on("socket", socket => socket.on("timeout", () => req.destroy(Error("Request timed out"))));
 
     req.on("error", error => reject(error));
-    req.end();
+
+    if (body) {
+      if (body instanceof Stream) {
+        body.pipe(req);
+        body.on("end", () => req.end());
+      } else {
+        req.write(body);
+        req.end();
+      }
+    }
   });
 }
