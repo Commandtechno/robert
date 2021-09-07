@@ -89,9 +89,8 @@ export default function response(
       }
     );
 
-    req.on("socket", socket => socket.on("timeout", () => req.destroy(Error("Request timed out"))));
-
     req.on("error", error => reject(error));
+    req.on("socket", socket => socket.on("timeout", () => req.destroy(Error("Request timed out"))));
 
     if (body) {
       if (body instanceof Stream) {
@@ -101,6 +100,6 @@ export default function response(
         req.write(body);
         req.end();
       }
-    }
+    } else req.end();
   });
 }
