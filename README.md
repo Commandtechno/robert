@@ -203,3 +203,7 @@ json; // { ... }
 arrayBuffer; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
 blob; // https://developer.mozilla.org/en-US/docs/Web/API/Blob
 ```
+
+# Best moments (This section is a joke)
+
+![roasted](https://cdn.discordapp.com/attachments/796997555752796184/884655359912972308/ezgif-3-7ffc8baffe5e.png)
