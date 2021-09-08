@@ -14,7 +14,10 @@ export default function response(
   redirects: number
 ): Promise<any> {
   const query = new URLSearchParams(options.query as Params).toString();
-  if (query) url += "?" + query;
+  if (query) {
+    options.query = {};
+    url += "?" + query;
+  }
 
   return new Promise((resolve, reject) => {
     const req = (url.startsWith("https") ? https : http)(
