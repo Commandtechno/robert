@@ -7,12 +7,12 @@ const global: ClientOptions = {
   base: "",
   full: false,
   port: null,
-  size: "10mb",
+  size: "100mb",
   query: {},
   format: "stream",
   headers: {},
-  timeout: "30s",
-  redirects: 3
+  timeout: "60s",
+  redirects: 5
 };
 
 function create(method: string, options: Options) {
