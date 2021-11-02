@@ -1,99 +1,76 @@
-import { Body, Params, RequestOptions } from "./types";
-import { toBuffer, toBuffers } from "./util";
+import { Body, Methods } from "./types/common";
+import { Options } from "./types/request";
 
-import { Stream } from "stream";
-import { request as http } from "http";
+import { TimeoutError, RedirectError, ResponseError, ParseError } from "./errors";
+import parse from "./parse";
+
 import { request as https } from "https";
+import { request as http } from "http";
+import { Stream } from "stream";
 
-export default function response(
-  method: string,
-  format: string,
-  url: string,
-  body: Body,
-  options: RequestOptions,
-  redirects: number
-): Promise<any> {
-  const query = new URLSearchParams(options.query as Params).toString();
-  if (query) {
-    options.query = {};
-    url += "?" + query;
-  }
-
+export default function response(method: Methods, url: string, body: Body, options: Options) {
   return new Promise((resolve, reject) => {
-    const req = (url.startsWith("https") ? https : http)(
+    const make = url.startsWith("https") ? https : http;
+    const req = make(
       url,
       {
         method,
         port: options.port,
+
+        // @ts-ignore pain
         headers: options.headers,
         timeout: options.timeout
       },
       res => {
         res.on("error", error => reject(error));
 
-        if ((res.statusCode === 301 || res.statusCode === 302) && res.headers.location && redirects > 0) {
-          redirects--;
-          let redirect = res.headers.location;
-          if (redirect.startsWith("/")) redirect = new URL(url).origin + redirect;
-          return resolve(response(method, format, redirect, body, options, redirects));
-        }
-
-        if ((res.statusCode < 200 || res.statusCode >= 400) && !options.full)
-          return reject(Error("URL responded with status " + res.statusCode + ": " + res.statusMessage));
-
-        async function $(data) {
-          try {
-            data = await data;
-          } catch (e) {
-            return reject(e);
+        if (res.headers.location) {
+          if (options.redirects === 0) reject(new RedirectError(url, options));
+          switch (res.statusCode) {
+            case 301:
+            case 302:
+            case 308:
+            case 308:
+              options.redirects--;
+              url = new URL(res.headers.location, url).toString();
+              return resolve(response(method, url, body, options));
+            case 303:
+              options.redirects--;
+              method = "GET";
+              url = new URL(res.headers.location, url).toString();
+              body = null;
+              return resolve(response(method, url, body, options));
           }
-
-          resolve(
-            options.full
-              ? {
-                  url,
-                  data,
-                  status: res.statusCode,
-                  statusText: res.statusMessage,
-                  headers: res.headers
-                }
-              : data
-          );
         }
 
-        switch (format) {
-          case "status":
-            return $({ code: res.statusCode, text: res.statusMessage });
-          case "headers":
-            return $(res.headers);
-          case "stream":
-            return $(res);
-          case "buffer":
-            return $(toBuffer(res, options.size));
-          case "bufferArray":
-            return $(toBuffers(res, options.size));
-          case "text":
-            return $(toBuffer(res, options.size).then(buffer => buffer.toString()));
-          case "json":
-            return $(toBuffer(res, options.size).then(buffer => JSON.parse(buffer.toString())));
-          case "arrayBuffer":
-            return $(
-              toBuffer(res, options.size).then(buffer =>
-                buffer.slice(buffer.byteLength, buffer.byteOffset + buffer.byteLength)
+        if (res.statusCode < 200 || res.statusCode >= 400)
+          parse(res, options.format, options.size)
+            .catch(() => {})
+            .then(data => {
+              reject(new ResponseError(url, options, res.statusCode, res.statusMessage, data));
+            });
+        else
+          parse(res, options.format, options.size)
+            .then(data =>
+              resolve(
+                options.full
+                  ? {
+                      url,
+                      data,
+                      status: { code: res.statusCode, message: res.statusMessage },
+                      headers: res.headers
+                    }
+                  : data
               )
-            );
-          case "blob":
-            return $(
-              toBuffers(res, options.size).then(buffers => new Blob(buffers, { type: res.headers["content-type"] }))
-            );
-          default:
-            throw Error("Unknown format");
-        }
+            )
+            .catch(error => reject(new ParseError(url, options, options.format, error)));
       }
     );
 
     req.on("error", error => reject(error));
-    req.on("socket", socket => socket.on("timeout", () => req.destroy(Error("Request timed out"))));
+    req.on("socket", socket =>
+      socket.on("timeout", () => req.destroy(new TimeoutError(url, options, options.timeout)))
+    );
 
     if (body) {
       if (body instanceof Stream) {

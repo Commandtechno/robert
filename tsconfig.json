@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "ES2019",
-    "outDir": "build",
-    "declaration": true,
-    "module": "commonjs"
-  },
-  "files": ["src/index.ts"]
-}

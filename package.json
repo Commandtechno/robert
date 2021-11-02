@@ -1,11 +1,13 @@
 {
   "name": "robert",
-  "version": "2.2.0",
+  "version": "2.5.0",
   "description": "",
-  "main": "build/index.js",
+  "main": "build/cjs/index.js",
+  "module": "build/mjs/index.js",
   "scripts": {
-    "minify": "esbuild src/client.ts --bundle --minify --platform=node --outfile=min.js",
-    "build": "tsc"
+    "build": "npm run build-cjs && npm run build-mjs",
+    "build-cjs": "tsc -p tsconfig.cjs.json",
+    "build-mjs": "tsc -p tsconfig.mjs.json"
   },
   "repository": {
     "type": "git",

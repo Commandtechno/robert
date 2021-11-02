@@ -1,11 +1,13 @@
-import { FormData, Formats, Header, Headers, Key, Params, Request, RequestOptions } from "./types";
-import { parseSize, parseTime } from "./util";
+import { Key, Body, Value, Query, Header, Headers, Methods, Formats } from "./types/common";
+import { FormData, Options, Request } from "./types/request";
 
-import { Readable } from "stream";
+import { parseSize, parseTime } from "./util";
 import response from "./response";
 
-export default function (method: string, url: string, options: RequestOptions): Request {
-  let body: Readable | Buffer | string;
+import { Readable } from "stream";
+
+export default function (method: Methods, url: string, options: Options): Request {
+  let body: Body;
 
   return {
     full(): Request {
@@ -33,20 +35,25 @@ export default function (method: string, url: string, options: RequestOptions): 
       return this;
     },
 
-    query(key: Key, value: any): Request {
-      options.query[key] = value;
+    query(key: Value, value: Value): Request {
+      // @ts-ignore still the same fucking issue
+      options.query.append(key, value);
       return this;
     },
-    setQuery(query: object): Request {
-      options.query = query;
+    setQuery(query: Query): Request {
+      // @ts-ignore yeah
+      options.query = new URLSearchParams(query);
       return this;
     },
-    addQuery(query: object): Request {
-      Object.assign(options.query, query);
+    addQuery(query: Query): Request {
+      // @ts-ignore h
+      const entries = new URLSearchParams(query).entries();
+      for (const [key, value] of entries) options.query.append(key, value);
       return this;
     },
     delQuery(key: Key): Request {
-      delete options.query[key];
+      // @ts-ignore fucking
+      options.query.delete(key);
       return this;
     },
 
@@ -84,8 +91,8 @@ export default function (method: string, url: string, options: RequestOptions): 
       return this;
     },
 
-    formData(formData: FormData) {
-      this.addHeaders(formData.getHeaders());
+    formData(formData: FormData): Request {
+      Object.assign(options.headers, formData.getHeaders());
       body = formData;
       return this;
     },
@@ -107,14 +114,22 @@ export default function (method: string, url: string, options: RequestOptions): 
       body = JSON.stringify(json);
       return this;
     },
-    form(form: object): Request {
+    form(form: Query): Request {
       this.contentType("application/x-www-form-urlencoded");
-      body = new URLSearchParams(form as Params).toString();
+
+      // @ts-ignore h
+      body = new URLSearchParams(form).toString();
       return this;
     },
 
-    send(format: Formats = options.format): Promise<any> {
-      return response(method, format, url, body, options, options.redirects);
+    send(format: Formats = options.format, full: boolean = options.full): Promise<any> {
+      options.format = format;
+      options.full = full;
+
+      const query = options.query.toString();
+      if (query) url += "?" + query;
+
+      return response(method, url, body, options);
     }
   };
 }

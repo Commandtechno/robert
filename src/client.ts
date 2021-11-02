@@ -1,58 +1,49 @@
-import { Client, ClientOptions, Formats, Header, Headers, Key, Options } from "./types";
-import { parseSize, parseTime } from "./util";
+import { Key, Value, Query, Header, Headers, Methods, Formats } from "./types/common";
+import { Client, Options as ClientOptions } from "./types/client";
+import { Options as RequestOptions } from "./types/request";
 
+import { parseSize, parseTime } from "./util";
 import request from "./request";
 
-const global: ClientOptions = {
-  base: "",
-  full: false,
-  port: null,
-  size: "100mb",
-  query: {},
-  format: "stream",
-  headers: {},
-  timeout: "60s",
-  redirects: 5
-};
+function create(method: Methods, base: string, options: RequestOptions) {
+  return function (url: URL | string = "") {
+    url = new URL(base + url);
 
-function create(method: string, options: Options) {
-  return function (url: string = "") {
-    const $ = new URL(options.base + url);
-    const headers = { ...options.headers };
-    const query = { ...options.query, ...Object.fromEntries([...$.searchParams]) };
+    options.headers = { ...options.headers };
+    const entries = url.searchParams.entries();
+    for (const [key, value] of entries) options.query.append(key, value);
+    url.search = "";
 
-    $.search = "";
-    return request(method, $.toString(), {
-      query,
-      headers,
-      size: options.size,
-      full: options.full,
-      port: options.port,
-      format: options.format,
-      timeout: options.timeout,
-      redirects: options.redirects
-    });
+    return request(method, url.toString(), { ...options });
   };
 }
 
-export default function (options?: string | ClientOptions) {
-  let opts: ClientOptions = {};
-  if (typeof options === "string") opts = { ...global, base: options };
-  else opts = { ...global, ...options };
+export default function (options?: ClientOptions): Client {
+  options ??= {};
+  if (typeof options === "string" || options instanceof URL) options = { base: options };
 
-  opts.query = { ...opts.query };
-  opts.headers = { ...opts.headers };
-  opts.timeout = parseTime(opts.timeout);
-  opts.size = parseSize(opts.size);
+  let base = "";
+  if (options.base) base = options.base.toString();
 
-  return {
-    get: create("GET", opts as Options),
-    put: create("PUT", opts as Options),
-    head: create("HEAD", opts as Options),
-    post: create("POST", opts as Options),
-    patch: create("PATCH", opts as Options),
-    delete: create("DELETE", opts as Options),
-    options: create("OPTIONS", opts as Options),
+  const opts: RequestOptions = {
+    full: options.full ?? false,
+    port: options.port ?? null,
+    size: parseSize(options.size ?? "100mb"),
+    query: options.query ?? new URLSearchParams(),
+    format: options.format ?? "stream",
+    headers: options.headers ? { ...options.headers } : {},
+    timeout: parseTime(options.timeout ?? "1m"),
+    redirects: 10
+  };
+
+  return Object.assign(create("GET", base, opts), {
+    get: create("GET", base, opts),
+    put: create("PUT", base, opts),
+    head: create("HEAD", base, opts),
+    post: create("POST", base, opts),
+    patch: create("PATCH", base, opts),
+    delete: create("DELETE", base, opts),
+    options: create("OPTIONS", base, opts),
 
     full(): Client {
       opts.full = !opts.full;
@@ -62,8 +53,8 @@ export default function (options?: string | ClientOptions) {
       opts.format = format;
       return this;
     },
-    base(base: string): Client {
-      opts.base = base;
+    base(base: string | URL): Client {
+      base = base.toString();
       return this;
     },
     port(port: number): Client {
@@ -83,20 +74,27 @@ export default function (options?: string | ClientOptions) {
       return this;
     },
 
-    query(key: Key, value: any): Client {
-      opts.query[key] = value;
+    query(key: Value, value: Value): Client {
+      opts.query.append(key.toString(), value.toString());
       return this;
     },
-    setQuery(query: object): Client {
-      opts.query = query;
+    setQuery(query: Query): Client {
+      // alright so i want to find a formal fix for this
+      // types only allow strings in paramaters: string[][] | Record<string, string> | string | URLSearchParams
+      // though it accepts and i want to be able to pass through Record<Key, Value> | Value[][] | URLSearchParams | string
+      // @ts-ignore
+      opts.query = new URLSearchParams(query);
       return this;
     },
-    addQuery(query: object): Client {
-      Object.assign(opts.query, query);
+    addQuery(query: Query): Client {
+      // @ts-ignore same thing again
+      const entries = new URLSearchParams(query).entries();
+      for (const [key, value] of entries) opts.query.append(key, value);
       return this;
     },
     delQuery(key: Key): Client {
-      delete opts.query[key];
+      // @ts-ignore pain
+      opts.query.delete(key);
       return this;
     },
 
@@ -129,5 +127,5 @@ export default function (options?: string | ClientOptions) {
       this.header("content-type", value);
       return this;
     }
-  };
+  });
 }

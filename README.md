@@ -18,14 +18,16 @@ NOTE #2: ~~i have reconsidered my previous anger and it is now in typescript~~
 
 NOTE #3: i have re written robert once again idk why ask robert
 
+NOTE #4: ok i rewrote it again
+
 # Usage
 
 ```js
 // CommonJS
-const robert = require("robert");
+const robert = require("robert").default;
 
 // Typescript / ES2019
-import * as robert from "robert";
+import robert from "robert";
 ```
 
 Make a simple GET request
@@ -42,11 +44,9 @@ robert
 };
 
 // If you want status and headers use this
-
 robert
   .get('https://api.zeppelin.gg/')
-  .full()
-  .send('json');
+  .send('json', true);
 
 // Returns
 {
@@ -55,8 +55,7 @@ robert
     status: 'cookies',
     with: 'milk'
   },
-  status: 200,
-  statusText: 'OK',
+  status: { code: 200, message: 'OK' },
   headers: { ... }
 };
 ```
@@ -103,12 +102,12 @@ Client (`Default`)
 const client = robert.client({
   base: "",
   port: null,
-  size: "10mb",
-  query: {},
+  size: "100mb",
+  query: new URLSearchParams(),
   format: "stream",
   headers: {},
-  timeout: "30s",
-  redirects: 3
+  timeout: "1m",
+  redirects: 10
 });
 
 // Change options
@@ -138,6 +137,7 @@ client.agent(value); // Shortcut for the user-agent header
 client.contentType(value); // Shortcut for the content-type header
 
 // All HTTPS methods (Returns request)
+client(url); // Equal to client.get
 client.get(url);
 client.put(url);
 client.head(url);
@@ -150,7 +150,7 @@ client.options(url);
 Request
 
 ```js
-const request = robert.get("https://api.zeppelin.gg/");
+const request = robert("https://api.zeppelin.gg/");
 
 // Change options
 client.full(); // Show full response with headers, status, data
@@ -187,21 +187,21 @@ request.json(json); // Set's an object as the response body and sets the content
 request.form(form); // Set's an object as the response body and sets the content-type header to application/x-www-form-urlencoded
 
 // Send the request
-request.send(format); // Returns Promise<format> with the result (Default is stream)
+request.send(format, full); // Returns Promise<format> or Promise<{ url, data, status, headers }> with the result (Default is stream)
 ```
 
 Formats
 
-```js
-status; // { code: 200, text: 'OK' }
-headers; // { ... }
-stream; // Default, can be piped into write stream
-buffer; // bufferArray combined into one <Buffer ...>
-bufferArray; // Raw chunks from the stream [<Buffer ...>, ...]
-text; // Gets the output as a normal string like this
-json; // { ... }
-arrayBuffer; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
-blob; // https://developer.mozilla.org/en-US/docs/Web/API/Blob
+```
+status // { code: 200, text: 'OK' }
+headers // { ... }
+stream // Default, can be piped into write stream
+buffer // bufferArray combined into one <Buffer ...>
+bufferArray // Raw chunks from the stream [<Buffer ...>, ...]
+text // Gets the output as a normal string like this
+json // { ... }
+arrayBuffer // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
+blob // https://developer.mozilla.org/en-US/docs/Web/API/Blob
 ```
 
 # Best moments (This section is a joke)
