@@ -1,6 +1,6 @@
 {
   "name": "robert",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "",
   "main": "build/cjs/index.js",
   "module": "build/mjs/index.js",

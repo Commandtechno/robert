@@ -69,7 +69,7 @@ export interface Request {
   send(format: "buffer", full?: boolean): Response<Buffer>;
   send(format: "bufferArray", full?: boolean): Response<Buffer[]>;
   send(format: "text", full?: boolean): Response<string>;
-  send(format: "json", full?: boolean): Response<object>;
+  send(format: "json", full?: boolean): Response<object | any[]>;
   send(format: "arrayBuffer", full?: boolean): Response<ArrayBuffer>;
   send(format: "blob", full?: boolean): Response<Blob>;
   send(): Response<any>;
