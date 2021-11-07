@@ -1,15 +1,9 @@
 import { Key, Value, Query, Header, Headers, Formats } from "./common";
 
-import { IncomingMessage } from "http";
 import { Readable } from "stream";
 
 export interface FormData extends Readable {
   getHeaders();
-}
-
-export interface Status {
-  code: number;
-  message: string;
 }
 
 export interface Options {
@@ -22,16 +16,6 @@ export interface Options {
   timeout: number;
   redirects: number;
 }
-
-export type Response<Type> = Promise<
-  | Type
-  | {
-      url: string;
-      data: Type;
-      status: Status;
-      headers: Headers;
-    }
->;
 
 export interface Request {
   full(): Request;
@@ -63,14 +47,5 @@ export interface Request {
   json(json: object): Request;
   form(form: Query): Request;
 
-  send(format: "status", full?: boolean): Response<Status>;
-  send(format: "headers", full?: boolean): Response<Headers>;
-  send(format: "stream", full?: boolean): Response<IncomingMessage>;
-  send(format: "buffer", full?: boolean): Response<Buffer>;
-  send(format: "bufferArray", full?: boolean): Response<Buffer[]>;
-  send(format: "text", full?: boolean): Response<string>;
-  send(format: "json", full?: boolean): Response<object | any[]>;
-  send(format: "arrayBuffer", full?: boolean): Response<ArrayBuffer>;
-  send(format: "blob", full?: boolean): Response<Blob>;
-  send(): Response<any>;
+  send(format?: Formats, full?: boolean): Promise<any>;
 }
