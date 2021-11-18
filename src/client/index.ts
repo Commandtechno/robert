@@ -5,19 +5,6 @@ import { Options as RequestOptions } from "../types/request";
 import { parseSize, parseTime } from "../util/parse";
 import request from "./request";
 
-function create(method: Methods, base: string, options: RequestOptions) {
-  return function (url: URL | string = "") {
-    url = new URL(base + url);
-
-    options.headers = { ...options.headers };
-    const entries = url.searchParams.entries();
-    for (const [key, value] of entries) options.query.append(key, value);
-    url.search = "";
-
-    return request(method, url.toString(), { ...options });
-  };
-}
-
 export default function (options?: ClientOptions): Client {
   options ??= {};
   if (typeof options === "string" || options instanceof URL) options = { base: options };
@@ -36,14 +23,27 @@ export default function (options?: ClientOptions): Client {
     redirects: 10
   };
 
-  return Object.assign(create("GET", base, opts), {
-    get: create("GET", base, opts),
-    put: create("PUT", base, opts),
-    head: create("HEAD", base, opts),
-    post: create("POST", base, opts),
-    patch: create("PATCH", base, opts),
-    delete: create("DELETE", base, opts),
-    options: create("OPTIONS", base, opts),
+  function init(method: Methods) {
+    return function (url: URL | string = "") {
+      url = new URL(base + url);
+
+      const clone = { ...opts, headers: { ...opts.headers } };
+      const entries = url.searchParams.entries();
+      for (const [key, value] of entries) clone.query.append(key, value);
+      url.search = "";
+
+      return request(method, url.toString(), clone);
+    };
+  }
+
+  return Object.assign(init("GET"), {
+    get: init("GET"),
+    put: init("PUT"),
+    head: init("HEAD"),
+    post: init("POST"),
+    patch: init("PATCH"),
+    delete: init("DELETE"),
+    options: init("OPTIONS"),
 
     full(): Client {
       opts.full = !opts.full;
