@@ -1,13 +1,13 @@
 {
   "name": "robert",
-  "version": "2.5.3",
+  "version": "2.6.0",
   "description": "",
   "main": "build/cjs/index.js",
   "module": "build/mjs/index.js",
   "scripts": {
     "build": "npm run build:cjs && npm run build:mjs",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:mjs": "tsc -p tsconfig.mjs.json"
+    "build:cjs": "tsc -p tsconfigcjs.json",
+    "build:mjs": "tsc -p tsconfigmjs.json"
   },
   "repository": {
     "type": "git",

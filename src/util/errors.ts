@@ -1,5 +1,5 @@
-import { Options } from "./types/request";
-import { Formats } from "./types/common";
+import { Options } from "../types/request";
+import { Formats } from "../types/common";
 
 export class RobertError extends Error {
   url: string;
@@ -40,13 +40,13 @@ export class ParseError extends RobertError {
 
 export class ResponseError extends RobertError {
   code: number;
-  message: string;
+  text: string;
   body?: any;
 
-  constructor(url: string, options: Options, code: number, message: string, body: any) {
-    super(url, options, "URL responded with status " + code + ": " + message);
+  constructor(url: string, options: Options, code: number, text: string, body: any) {
+    super(url, options, "URL responded with status " + code + ": " + text);
     this.code = code;
-    this.message = message;
+    this.text = text;
     if (body) this.body = body;
   }
 }

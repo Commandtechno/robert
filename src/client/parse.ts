@@ -1,4 +1,4 @@
-import { Formats } from "./types/common";
+import { Formats } from "../types/common";
 
 import { IncomingMessage } from "http";
 
@@ -46,7 +46,9 @@ async function toJSON(res: IncomingMessage, maxSize: number): Promise<object> {
 export default async function (res: IncomingMessage, format: Formats, maxSize: number) {
   switch (format) {
     case "status":
-      return { code: res.statusCode, message: res.statusMessage };
+      return res.statusCode;
+    case "statusText":
+      return res.statusMessage;
     case "headers":
       return res.headers;
     case "stream":

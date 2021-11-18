@@ -1,7 +1,7 @@
-import { Body, Methods } from "./types/common";
-import { Options } from "./types/request";
+import { Body, Methods } from "../types/common";
+import { Options } from "../types/request";
 
-import { TimeoutError, RedirectError, ResponseError, ParseError } from "./errors";
+import { TimeoutError, RedirectError, ResponseError, ParseError } from "../util/errors";
 import parse from "./parse";
 
 import { request as https } from "https";
@@ -57,7 +57,8 @@ export default function response(method: Methods, url: string, body: Body, optio
                   ? {
                       url,
                       data,
-                      status: { code: res.statusCode, message: res.statusMessage },
+                      status: res.statusCode,
+                      statusText: res.statusMessage,
                       headers: res.headers
                     }
                   : data

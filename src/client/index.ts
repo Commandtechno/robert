@@ -1,8 +1,8 @@
-import { Key, Value, Query, Header, Headers, Methods, Formats } from "./types/common";
-import { Client, Options as ClientOptions } from "./types/client";
-import { Options as RequestOptions } from "./types/request";
+import { Key, Value, Query, Header, Headers, Methods, Formats } from "../types/common";
+import { Client, Options as ClientOptions } from "../types/client";
+import { Options as RequestOptions } from "../types/request";
 
-import { parseSize, parseTime } from "./util";
+import { parseSize, parseTime } from "../util/parse";
 import request from "./request";
 
 function create(method: Methods, base: string, options: RequestOptions) {

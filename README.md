@@ -55,7 +55,8 @@ robert
     status: 'cookies',
     with: 'milk'
   },
-  status: { code: 200, message: 'OK' },
+  status: 200,
+  statusText: 'OK',
   headers: { ... }
 };
 ```
@@ -70,9 +71,7 @@ robert
   .send('json');
 
 // Returns
-{
-  content: 'robert best http client', ... }
-};
+{ content: 'robert best http client', ... };
 ```
 
 Execute a Discord webhook using a client
@@ -84,13 +83,11 @@ const client = robert.client('https://discord.com/api/v9')
 
 client
   .post('/webhooks/{WEBHOOK_ID}/{WEBHOOK_TOKEN}')
-  .json({ embeds: [{ description: 'this is from a robert client with base ' + client.base }] })
+  .json({ embeds: [{ description: 'this is from robert <a:robert:889258601103888394>' }] })
   .send();
 
 // Returns
-{
-  { embeds: [{ description: 'this is from a robert client with base https://discord.com/api/v9' }], ... }
-};
+{ embeds: [{ description: 'this is from robert <a:robert:889258601103888394>' }], ... };
 ```
 
 # Documentation
@@ -109,6 +106,16 @@ const client = robert.client({
   timeout: "1m",
   redirects: 10
 });
+
+// All HTTPS methods (Returns request)
+client(url); // Equal to client.get
+client.get(url);
+client.put(url);
+client.head(url);
+client.post(url);
+client.patch(url);
+client.delete(url);
+client.options(url);
 
 // Change options
 client.full(); // Show full response with headers, status, data
@@ -135,47 +142,37 @@ client.delHeader(key); // Delete a header
 client.auth(value); // Shortcut for the authorization header
 client.agent(value); // Shortcut for the user-agent header
 client.contentType(value); // Shortcut for the content-type header
-
-// All HTTPS methods (Returns request)
-client(url); // Equal to client.get
-client.get(url);
-client.put(url);
-client.head(url);
-client.post(url);
-client.patch(url);
-client.delete(url);
-client.options(url);
 ```
 
 Request
 
 ```js
-const request = robert("https://api.zeppelin.gg/");
+const request = robert("https://commandtechno.com");
 
 // Change options
-client.full(); // Show full response with headers, status, data
-client.format(format); // Change the default format for all responses
-client.port(port); // Set the port it requests on (Default's to protocol)
-client.redirects(redirects); // Set the maximum amount of redirects for it to follow
-client.size(size); // Set the maximum size for requests
-client.timeout(time); // Set the maximum time to wait for a request
+request.full(); // Show full response with headers, status, data
+request.format(format); // Change the default format for all responses
+request.port(port); // Set the port it requests on (Default's to protocol)
+request.redirects(redirects); // Set the maximum amount of redirects for it to follow
+request.size(size); // Set the maximum size for requests
+request.timeout(time); // Set the maximum time to wait for a request
 
 // Modify URL parameters
-client.query(key, value); // Add a single parameter
-client.setQuery(query); // Replace all parameters
-client.addQuery(query); // Add multiple parameters
-client.delQuery(key); // Delete a parameter
+request.query(key, value); // Add a single parameter
+request.setQuery(query); // Replace all parameters
+request.addQuery(query); // Add multiple parameters
+request.delQuery(key); // Delete a parameter
 
 // Modify headers
-client.header(key, value); // Add a single header
-client.setHeaders(headers); // Replace all headers
-client.addHeaders(headers); // Add multiple headers
-client.delHeader(key); // Delete a header
+request.header(key, value); // Add a single header
+request.setHeaders(headers); // Replace all headers
+request.addHeaders(headers); // Add multiple headers
+request.delHeader(key); // Delete a header
 
 // Header shortcuts
-client.auth(value); // Shortcut for the authorization header
-client.agent(value); // Shortcut for the user-agent header
-client.contentType(value); // Shortcut for the content-type header
+request.auth(value); // Shortcut for the authorization header
+request.agent(value); // Shortcut for the user-agent header
+request.contentType(value); // Shortcut for the content-type header
 request.contentLength(value /* Default's to body length */); // Shortcut for the content-length header
 
 // Set response body
@@ -187,13 +184,14 @@ request.json(json); // Set's an object as the response body and sets the content
 request.form(form); // Set's an object as the response body and sets the content-type header to application/x-www-form-urlencoded
 
 // Send the request
-request.send(format, full); // Returns Promise<format> or Promise<{ url, data, status, headers }> with the result (Default is stream)
+request.send(format, full); // Returns Promise<data> or Promise<{ url, data, status, statusText, headers }> with the result (Default is stream)
 ```
 
 Formats
 
 ```
-status // { code: 200, text: 'OK' }
+status // 200
+statusText // 'OK'
 headers // { ... }
 stream // Default, can be piped into write stream
 buffer // bufferArray combined into one <Buffer ...>

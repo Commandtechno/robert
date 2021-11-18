@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "ESNext",
-    "outDir": "build/mjs",
-    "declaration": true,
-    "module": "ESNext"
-  }
-}

@@ -1,7 +1,7 @@
-import { Key, Body, Value, Query, Header, Headers, Methods, Formats } from "./types/common";
-import { FormData, Options, Request } from "./types/request";
+import { Key, Body, Value, Query, Header, Headers, Methods, Formats } from "../types/common";
+import { FormData, Options, Request } from "../types/request";
 
-import { parseSize, parseTime } from "./util";
+import { parseSize, parseTime } from "../util/parse";
 import response from "./response";
 
 import { Readable } from "stream";

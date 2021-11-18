@@ -9,6 +9,7 @@ export type Headers = Record<Key, Header>;
 export type Methods = "GET" | "PUT" | "HEAD" | "POST" | "PATCH" | "DELETE" | "OPTIONS";
 export type Formats =
   | "status"
+  | "statusText"
   | "headers"
   | "stream"
   | "buffer"
