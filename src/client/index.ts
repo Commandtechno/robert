@@ -53,8 +53,8 @@ export default function (options?: ClientOptions): Client {
       opts.format = format;
       return this;
     },
-    base(base: string | URL): Client {
-      base = base.toString();
+    base(url: string | URL): Client {
+      base = url.toString();
       return this;
     },
     port(port: number): Client {
