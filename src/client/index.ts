@@ -27,7 +27,12 @@ export default function (options?: ClientOptions): Client {
     return function (url: URL | string = "") {
       url = new URL(base + url);
 
-      const clone = { ...opts, headers: { ...opts.headers } };
+      const clone = {
+        ...opts,
+        headers: { ...opts.headers },
+        query: new URLSearchParams(opts.query)
+      };
+
       const entries = url.searchParams.entries();
       for (const [key, value] of entries) clone.query.append(key, value);
       url.search = "";
