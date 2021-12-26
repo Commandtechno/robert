@@ -1,7 +1,7 @@
 {
-  "name": "robert",
-  "version": "2.6.3",
-  "description": "",
+  "name": "robert-server",
+  "version": "1.0.0",
+  "description": "Simple web framework because I am angry at express",
   "main": "build/cjs/index.js",
   "module": "build/mjs/index.js",
   "scripts": {
@@ -14,22 +14,24 @@
     "url": "git+https://github.com/Commandtechno/robert.git"
   },
   "keywords": [
+    "robert",
+    "server",
+    "http",
     "https",
     "http",
-    "https client",
-    "http client",
-    "request",
-    "response",
-    "fetch",
-    "promise",
-    "simple",
-    "robert",
+    "server",
+    "https",
+    "server",
     "carrot",
     "chomp"
   ],
-  "author": "",
+  "author": "Commandtechno",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Commandtechno/robert/issues"
+  },
+  "homepage": "https://github.com/Commandtechno/robert#readme",
   "devDependencies": {
-    "@types/node": "^15.12.5"
+    "@types/node": "^17.0.5"
   }
 }

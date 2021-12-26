@@ -1,0 +1,35 @@
+{
+  "name": "robert",
+  "version": "2.6.3",
+  "description": "A generic shitty http client in nod.js",
+  "main": "build/cjs/index.js",
+  "module": "build/mjs/index.js",
+  "scripts": {
+    "build": "npm run build:cjs && npm run build:mjs",
+    "build:cjs": "tsc -p tsconfigcjs.json",
+    "build:mjs": "tsc -p tsconfigmjs.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Commandtechno/robert.git"
+  },
+  "keywords": [
+    "https",
+    "http",
+    "https client",
+    "http client",
+    "request",
+    "response",
+    "fetch",
+    "promise",
+    "simple",
+    "robert",
+    "carrot",
+    "chomp"
+  ],
+  "author": "Commandtechno",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^15.12.5"
+  }
+}

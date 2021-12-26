@@ -1,0 +1,33 @@
+{
+  "name": "robert-util",
+  "version": "1.0.0",
+  "description": "Utilities for robert and robert-server packages",
+  "main": "build/cjs/index.js",
+  "module": "build/mjs/index.js",
+  "scripts": {
+    "build": "npm run build:cjs && npm run build:mjs",
+    "build:cjs": "tsc -p tsconfigcjs.json",
+    "build:mjs": "tsc -p tsconfigmjs.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Commandtechno/robert.git"
+  },
+  "keywords": [
+    "robert",
+    "utils",
+    "http",
+    "https",
+    "carrot",
+    "chomp"
+  ],
+  "author": "Commandtechno",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Commandtechno/robert/issues"
+  },
+  "homepage": "https://github.com/Commandtechno/robert/tree/master/packages/util",
+  "devDependencies": {
+    "@types/node": "^17.0.5"
+  }
+}

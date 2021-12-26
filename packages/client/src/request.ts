@@ -1,12 +1,23 @@
-import { Key, Body, Value, Query, Header, Headers, Methods, Formats } from "../types/common";
-import { FormData, Options, Request } from "../types/request";
+import {
+  Key,
+  Body,
+  Value,
+  Query,
+  Header,
+  Headers,
+  Methods,
+  Formats,
+  FormData,
+  Request,
+  RequestOptions
+} from ".";
 
-import { parseSize, parseTime } from "../util/parse";
+import { parseSize, parseTime } from "../../util";
 import response from "./response";
 
 import { Readable } from "stream";
 
-export default function (method: Methods, url: string, options: Options): Request {
+export default function (method: Methods, url: URL, options: RequestOptions): Request {
   let body: Body;
 
   return {
@@ -126,9 +137,8 @@ export default function (method: Methods, url: string, options: Options): Reques
       options.format = format;
       options.full = full;
 
-      const query = options.query.toString();
-      if (query) url += "?" + query;
-
+      // @ts-ignore shouldn't be readonly, pain (it works though)
+      url.searchParams = options.query;
       return response(method, url, body, options);
     }
   };

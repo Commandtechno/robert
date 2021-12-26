@@ -6,7 +6,7 @@ export interface FormData extends Readable {
   getHeaders();
 }
 
-export interface Options {
+export interface RequestOptions {
   full: boolean;
   port: number;
   size: number;

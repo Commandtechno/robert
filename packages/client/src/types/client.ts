@@ -1,7 +1,7 @@
 import { Key, Value, Query, Header, Headers, Formats } from "./common";
 import { Request } from "./request";
 
-export type Options =
+export type ClientOptions =
   | string
   | URL
   | {

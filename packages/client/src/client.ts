@@ -1,8 +1,17 @@
-import { Key, Value, Query, Header, Headers, Methods, Formats } from "../types/common";
-import { Client, Options as ClientOptions } from "../types/client";
-import { Options as RequestOptions } from "../types/request";
+import {
+  Key,
+  Value,
+  Query,
+  Header,
+  Headers,
+  Methods,
+  Formats,
+  Client,
+  ClientOptions,
+  RequestOptions
+} from ".";
 
-import { parseSize, parseTime } from "../util/parse";
+import { parseSize, parseTime } from "../../util";
 import request from "./request";
 
 export default function (options?: ClientOptions): Client {
@@ -26,18 +35,18 @@ export default function (options?: ClientOptions): Client {
   function init(method: Methods) {
     return function (url: URL | string = "") {
       url = new URL(base + url);
-
-      const clone = {
+      const clone: RequestOptions = {
         ...opts,
         headers: { ...opts.headers },
-        query: new URLSearchParams(opts.query)
+        query: new URLSearchParams(opts.query),
+        port: opts.port ?? parseInt(url.port)
       };
 
       const entries = url.searchParams.entries();
       for (const [key, value] of entries) clone.query.append(key, value);
       url.search = "";
 
-      return request(method, url.toString(), clone);
+      return request(method, url, clone);
     };
   }
 

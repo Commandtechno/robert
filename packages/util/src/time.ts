@@ -2,6 +2,7 @@ const ms = 1;
 const s = ms * 1000;
 const m = s * 60;
 const h = m * 60;
+
 export const times = {
   ms,
   msec: ms,
@@ -25,14 +26,14 @@ export const times = {
   hours: h
 };
 
-const ratio = 1024;
-export const sizes = {
-  k: Math.pow(ratio, 1),
-  m: Math.pow(ratio, 2),
-  g: Math.pow(ratio, 3),
-  t: Math.pow(ratio, 4),
-  p: Math.pow(ratio, 5),
-  e: Math.pow(ratio, 6),
-  z: Math.pow(ratio, 7),
-  y: Math.pow(ratio, 8)
-};
+export function parseTime(time: number | string): number {
+  if (typeof time === "number") return time;
+
+  const amount = parseInt(time.match(/^\d+/)[0]);
+  const unit = time
+    .replace(/^\d+\s*/, "")
+    .trimEnd()
+    .toLowerCase();
+
+  return amount * (times[unit] ?? 0);
+}
