@@ -12,7 +12,7 @@ import {
   RequestOptions
 } from ".";
 
-import { parseSize, parseTime } from "../../util";
+import { parseSize, parseTime } from "robert-util";
 import response from "./response";
 
 import { Readable } from "stream";
@@ -137,8 +137,7 @@ export default function (method: Methods, url: URL, options: RequestOptions): Re
       options.format = format;
       options.full = full;
 
-      // @ts-ignore shouldn't be readonly, pain (it works though)
-      url.searchParams = options.query;
+      url.search = options.query.toString();
       return response(method, url, body, options);
     }
   };

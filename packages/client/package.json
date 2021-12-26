@@ -31,5 +31,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^15.12.5"
+  },
+  "dependencies": {
+    "robert-util": "^1.0.0"
   }
 }

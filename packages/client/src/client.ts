@@ -11,7 +11,7 @@ import {
   RequestOptions
 } from ".";
 
-import { parseSize, parseTime } from "../../util";
+import { parseSize, parseTime } from "robert-util";
 import request from "./request";
 
 export default function (options?: ClientOptions): Client {
