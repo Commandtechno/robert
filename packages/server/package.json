@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/Commandtechno/robert/issues"
   },
-  "homepage": "https://github.com/Commandtechno/robert#readme",
+  "homepage": "https://github.com/Commandtechno/robert/tree/master/packages/client",
   "devDependencies": {
     "@types/node": "^17.0.5"
   }

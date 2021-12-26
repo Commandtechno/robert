@@ -1,6 +1,6 @@
 {
   "name": "robert",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "description": "A generic shitty http client in nod.js",
   "main": "build/cjs/index.js",
   "module": "build/mjs/index.js",
