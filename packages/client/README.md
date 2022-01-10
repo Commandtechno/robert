@@ -12,11 +12,11 @@ its description should pro🅱a🅱ly 🅱e something like the 🅱est unopinion
 
 ok docs time
 
-NOTE: ~~fuck typings i gave up on that shit it made me angry~~
+~~NOTE: fuck typings i gave up on that shit it made me angry~~
 
-NOTE #2: ~~i have reconsidered my previous anger and it is now in typescript~~
+~~NOTE #2: i have reconsidered my previous anger and it is now in typescript~~
 
-NOTE #3: i have re written robert once again idk why ask robert
+~~NOTE #3: i have re written robert once again idk why ask robert~~
 
 NOTE #4: ok i rewrote it again
 
