@@ -9,7 +9,7 @@ import {
   Formats,
   FormData,
   Request,
-  RequestOptions
+  RequestOptions,
 } from ".";
 
 import { parseSize, parseTime } from "robert-util";
@@ -17,7 +17,11 @@ import response from "./response";
 
 import { Readable } from "stream";
 
-export default function (method: Methods, url: URL, options: RequestOptions): Request {
+export default function (
+  method: Methods,
+  url: URL,
+  options: RequestOptions
+): Request {
   let body: Body;
 
   return {
@@ -133,12 +137,15 @@ export default function (method: Methods, url: URL, options: RequestOptions): Re
       return this;
     },
 
-    send(format: Formats = options.format, full: boolean = options.full): Promise<any> {
+    send(
+      format: Formats = options.format,
+      full: boolean = options.full
+    ): Promise<any> {
       options.format = format;
       options.full = full;
 
       url.search = options.query.toString();
       return response(method, url, body, options);
-    }
+    },
   };
 }

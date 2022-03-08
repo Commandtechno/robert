@@ -1,9 +1,20 @@
-import { toBuffer, toBuffers, toString, toJSON, toArrayBuffer, toBlob } from "robert-util";
+import {
+  toBuffer,
+  toBuffers,
+  toString,
+  toJSON,
+  toArrayBuffer,
+  toBlob,
+} from "robert-util";
 import { Formats } from ".";
 
 import { IncomingMessage } from "http";
 
-export default async function (res: IncomingMessage, format: Formats, maxSize: number) {
+export default async function (
+  res: IncomingMessage,
+  format: Formats,
+  maxSize: number
+) {
   switch (format) {
     case "status":
       return res.statusCode;

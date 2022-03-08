@@ -104,7 +104,7 @@ const client = robert.client({
   format: "stream",
   headers: {},
   timeout: "1m",
-  redirects: 10
+  redirects: 10,
 });
 
 // All HTTPS methods (Returns request)

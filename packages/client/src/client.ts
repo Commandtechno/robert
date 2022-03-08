@@ -8,7 +8,7 @@ import {
   Formats,
   Client,
   ClientOptions,
-  RequestOptions
+  RequestOptions,
 } from ".";
 
 import { parseSize, parseTime } from "robert-util";
@@ -16,7 +16,8 @@ import request from "./request";
 
 export default function (options?: ClientOptions): Client {
   options ??= {};
-  if (typeof options === "string" || options instanceof URL) options = { base: options };
+  if (typeof options === "string" || options instanceof URL)
+    options = { base: options };
 
   let base = "";
   if (options.base) base = options.base.toString();
@@ -29,7 +30,7 @@ export default function (options?: ClientOptions): Client {
     format: options.format ?? "stream",
     headers: options.headers ? { ...options.headers } : {},
     timeout: parseTime(options.timeout ?? "1m"),
-    redirects: 10
+    redirects: 10,
   };
 
   function init(method: Methods) {
@@ -39,7 +40,7 @@ export default function (options?: ClientOptions): Client {
         ...opts,
         headers: { ...opts.headers },
         query: new URLSearchParams(opts.query),
-        port: opts.port ?? parseInt(url.port)
+        port: opts.port ?? parseInt(url.port),
       };
 
       const entries = url.searchParams.entries();
@@ -140,6 +141,6 @@ export default function (options?: ClientOptions): Client {
     contentType(value: Header): Client {
       this.header("content-type", value);
       return this;
-    }
+    },
   });
 }
